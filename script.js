@@ -23,7 +23,7 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-// Form noop submit
+// Form: noop / open-sheet handlers
 document.querySelectorAll('form[data-noop]').forEach(f => {
     f.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -33,6 +33,22 @@ document.querySelectorAll('form[data-noop]').forEach(f => {
             btn.textContent = 'Sent! We\'ll reply in 2 hours.';
             btn.disabled = true;
             setTimeout(() => { btn.textContent = original; btn.disabled = false; f.reset(); }, 3000);
+        }
+    });
+});
+
+// Forms that should open a Google Sheet (or any URL) on submit
+document.querySelectorAll('form[data-sheet]').forEach(f => {
+    f.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const url = f.dataset.sheet;
+        if (url) window.open(url, '_blank', 'noopener');
+        const btn = f.querySelector('button[type="submit"]');
+        if (btn) {
+            const original = btn.innerHTML;
+            btn.innerHTML = 'Opening enquiry sheet…';
+            btn.disabled = true;
+            setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 2500);
         }
     });
 });
@@ -112,18 +128,31 @@ document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date
     update();
 })();
 
-// Video testimonials — swap thumb for iframe on click
+// Video testimonials — swap thumb for live player on click
+// Supports both local video files (data-type="file") and embed URLs (YouTube/Vimeo)
 document.querySelectorAll('.video-thumb[data-video]').forEach(thumb => {
     const play = () => {
         const url = thumb.dataset.video;
+        const type = thumb.dataset.type;
         // Clear placeholder content
         thumb.querySelectorAll('.play-btn, .video-quote, .video-tag').forEach(el => el.remove());
-        const iframe = document.createElement('iframe');
-        iframe.src = url;
-        iframe.title = 'Client testimonial';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-        iframe.allowFullscreen = true;
-        thumb.appendChild(iframe);
+
+        let media;
+        if (type === 'file' || /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url)) {
+            media = document.createElement('video');
+            media.src = url;
+            media.controls = true;
+            media.autoplay = true;
+            media.playsInline = true;
+            media.style.objectFit = 'cover';
+        } else {
+            media = document.createElement('iframe');
+            media.src = url;
+            media.title = 'Client testimonial';
+            media.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            media.allowFullscreen = true;
+        }
+        thumb.appendChild(media);
     };
     thumb.addEventListener('click', play);
     thumb.addEventListener('keydown', (e) => {
