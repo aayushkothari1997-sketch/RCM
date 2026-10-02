@@ -88,46 +88,46 @@
                 </div>
             </div>
             <div class="reveal">
-                <form class="form" data-sheet="https://docs.google.com/spreadsheets/d/1PE97ZWwvYza85XYOd8mj712cLRaHbIlAw_3v7FES38c/edit?usp=sharing">
+                <form class="form" data-formspree action="https://formspree.io/f/xwlpdyoe" method="POST">
                     <div class="row">
                         <div class="field">
                             <label for="fname">First name</label>
-                            <input id="fname" type="text" required placeholder="Your first name">
+                            <input id="fname" name="first_name" type="text" required placeholder="Your first name">
                         </div>
                         <div class="field">
                             <label for="lname">Last name</label>
-                            <input id="lname" type="text" required placeholder="Your last name">
+                            <input id="lname" name="last_name" type="text" required placeholder="Your last name">
                         </div>
                     </div>
                     <div class="row">
                         <div class="field">
                             <label for="email">Email</label>
-                            <input id="email" type="email" required placeholder="you@brand.com">
+                            <input id="email" name="email" type="email" required placeholder="you@brand.com">
                         </div>
                         <div class="field">
                             <label for="phone">Phone</label>
-                            <input id="phone" type="tel" placeholder="+91 98331 36580">
+                            <input id="phone" name="phone" type="tel" placeholder="+91 98331 36580">
                         </div>
                     </div>
                     <div class="field">
                         <label for="brand">Brand / Company</label>
-                        <input id="brand" type="text" placeholder="Your brand name">
+                        <input id="brand" name="brand" type="text" placeholder="Your brand name">
                     </div>
                     <div class="field">
                         <label for="service">What do you need?</label>
-                        <select id="service">
+                        <select id="service" name="service">
                             <option>Performance Marketing (Full Funnel)</option>
                             <option>Meta Ads</option>
                             <option>Google PPC</option>
                             <option>SEO</option>
                             <option>Social Media Management</option>
-                            <option>Creative & Copy</option>
+                            <option>Creative &amp; Copy</option>
                             <option>Not sure yet — let's chat</option>
                         </select>
                     </div>
                     <div class="field">
                         <label for="budget">Monthly marketing budget</label>
-                        <select id="budget">
+                        <select id="budget" name="budget">
                             <option>Under ₹50,000</option>
                             <option>₹50,000 – ₹1,50,000</option>
                             <option>₹1,50,000 – ₹5,00,000</option>
@@ -137,9 +137,12 @@
                     </div>
                     <div class="field">
                         <label for="msg">Tell us more</label>
-                        <textarea id="msg" placeholder="What stage is the brand at? What's working, what's not, what are you trying to hit?"></textarea>
+                        <textarea id="msg" name="message" placeholder="What stage is the brand at? What's working, what's not, what are you trying to hit?"></textarea>
                     </div>
+                    <!-- Honeypot anti-spam (bots fill this; humans don't see it) -->
+                    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
                     <button type="submit" class="btn btn-primary" style="width:100%;">Submit Enquiry <span class="arrow">→</span></button>
+                    <p class="form-status" data-form-status style="margin:1rem 0 0;font-size:.9rem;color:var(--rcm-text-muted);display:none;"></p>
                 </form>
             </div>
         </div>

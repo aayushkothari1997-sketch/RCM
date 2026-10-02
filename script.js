@@ -37,18 +37,47 @@ document.querySelectorAll('form[data-noop]').forEach(f => {
     });
 });
 
-// Forms that should open a Google Sheet (or any URL) on submit
-document.querySelectorAll('form[data-sheet]').forEach(f => {
-    f.addEventListener('submit', (e) => {
+// Formspree AJAX submission — keeps the user on the page, shows inline status
+document.querySelectorAll('form[data-formspree]').forEach(f => {
+    const status = f.querySelector('[data-form-status]');
+    const btn = f.querySelector('button[type="submit"]');
+    const originalBtnHTML = btn ? btn.innerHTML : '';
+
+    const setStatus = (msg, kind) => {
+        if (!status) return;
+        status.textContent = msg;
+        status.style.display = 'block';
+        status.style.color = kind === 'ok' ? '#2ecc71'
+                           : kind === 'err' ? '#ff6b6b'
+                           : 'var(--rcm-text-muted)';
+    };
+
+    f.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const url = f.dataset.sheet;
-        if (url) window.open(url, '_blank', 'noopener');
-        const btn = f.querySelector('button[type="submit"]');
-        if (btn) {
-            const original = btn.innerHTML;
-            btn.innerHTML = 'Opening enquiry sheet…';
-            btn.disabled = true;
-            setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 2500);
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Sending…'; }
+        setStatus('Sending your enquiry…', 'info');
+
+        try {
+            const res = await fetch(f.action, {
+                method: 'POST',
+                body: new FormData(f),
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (res.ok) {
+                f.reset();
+                setStatus('✓ Thanks — we got it. The team will reply within 2 hours.', 'ok');
+                if (btn) btn.innerHTML = 'Sent ✓';
+                setTimeout(() => { if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; } }, 4000);
+            } else {
+                const data = await res.json().catch(() => ({}));
+                const msg = (data.errors && data.errors.map(e => e.message).join(', ')) || 'Something went wrong. Please email grow@rollercoastermedia.com instead.';
+                setStatus('✗ ' + msg, 'err');
+                if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; }
+            }
+        } catch (err) {
+            setStatus('✗ Network error. Please email grow@rollercoastermedia.com instead.', 'err');
+            if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; }
         }
     });
 });
