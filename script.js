@@ -163,8 +163,8 @@ document.querySelectorAll('.video-thumb[data-video]').forEach(thumb => {
     const play = () => {
         const url = thumb.dataset.video;
         const type = thumb.dataset.type;
-        // Clear placeholder content
-        thumb.querySelectorAll('.play-btn, .video-quote, .video-tag').forEach(el => el.remove());
+        // Clear placeholder content (play button, overlay text, and the thumbnail image)
+        thumb.querySelectorAll('.play-btn, .video-quote, .video-tag, .video-thumb-img').forEach(el => el.remove());
 
         let media;
         if (type === 'file' || /\.(mp4|webm|mov|ogg)(\?|$)/i.test(url)) {
