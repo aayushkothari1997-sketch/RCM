@@ -878,6 +878,7 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; position: relative; }
 .brand-slot img.logo-wide   { max-height: 46px; }
 .brand-slot img.logo-mid    { max-height: 62px; }
 .brand-slot img.logo-square { max-height: 82px; }
+.brand-slot img.logo-kg     { max-height: 92px; max-width: 88%; opacity: .95; }
 .brand-slot:hover img { opacity: 1; transform: scale(1.05); }
 .brand-slot.brand-text { font-size: 1.1rem; letter-spacing: .04em; }
 @media (max-width: 540px) {
