@@ -65,6 +65,8 @@ document.querySelectorAll('form[data-formspree]').forEach(f => {
             });
 
             if (res.ok) {
+                // Meta Pixel: count a successful enquiry as a Lead
+                if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'Contact form' });
                 f.reset();
                 setStatus('✓ Thanks — we got it. The team will reply within 2 hours.', 'ok');
                 if (btn) btn.innerHTML = 'Sent ✓';
@@ -80,6 +82,14 @@ document.querySelectorAll('form[data-formspree]').forEach(f => {
             if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; }
         }
     });
+});
+
+// Meta Pixel: count Calendly and WhatsApp clicks as Contact events
+document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a || typeof fbq !== 'function') return;
+    if (a.href.includes('calendly.com')) fbq('track', 'Contact', { content_name: 'Calendly' });
+    else if (a.href.includes('wa.me')) fbq('track', 'Contact', { content_name: 'WhatsApp' });
 });
 
 // Year in footer
