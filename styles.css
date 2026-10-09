@@ -869,14 +869,21 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; position: relative; }
     transform: translateY(-3px);
 }
 .brand-slot img {
-    max-height: 80px;
     width: auto;
+    max-width: 78%;
     object-fit: contain;
-    filter: grayscale(1) brightness(0) invert(1);
-    opacity: .75;
-    transition: opacity .25s, filter .25s;
+    opacity: .78;
+    transition: opacity .25s, transform .35s var(--ease);
 }
-.brand-slot:hover img { opacity: 1; filter: grayscale(0) brightness(1) invert(0); }
+.brand-slot img.logo-wide   { max-height: 46px; }
+.brand-slot img.logo-mid    { max-height: 62px; }
+.brand-slot img.logo-square { max-height: 82px; }
+.brand-slot:hover img { opacity: 1; transform: scale(1.05); }
+.brand-slot.brand-text { font-size: 1.1rem; letter-spacing: .04em; }
+@media (max-width: 540px) {
+    .brand-slot img.logo-wide   { max-height: 40px; }
+    .brand-slot img.logo-square { max-height: 74px; }
+}
 
 @media (max-width: 880px) {
     .brand-slot {
