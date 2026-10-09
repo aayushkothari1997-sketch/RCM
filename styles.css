@@ -1284,6 +1284,68 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; position: relative; }
     .bars span::after { font-size: .58rem; }
 }
 
+/* ---------- CONTACT PAGE LAYOUT ---------- */
+.contact-top { padding-top: clamp(2rem, 5vw, 4rem); }
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+}
+.contact-intro { position: sticky; top: 110px; }
+.contact-h1 {
+    font-size: clamp(2.6rem, 6vw, 5.2rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    line-height: .95;
+    margin: 0 0 1.2rem;
+}
+.contact-intro .sub { margin-bottom: 1.5rem; max-width: 440px; }
+.contact-points { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .7rem; }
+.contact-points li { display: flex; align-items: center; gap: .7rem; color: #fff; font-size: .95rem; }
+.contact-points li::before {
+    content: "✓";
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--rcm-magenta-soft); color: var(--rcm-magenta);
+    display: grid; place-items: center; font-size: .72rem; font-weight: 900; flex-shrink: 0;
+}
+.talk-band {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: var(--rcm-surface);
+    border: 1px solid var(--rcm-border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.6rem, 4vw, 2.6rem);
+    margin-bottom: 1.2rem;
+}
+.talk-band h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: .5rem; }
+.talk-actions { display: flex; gap: .8rem; flex-wrap: wrap; }
+.contact-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.contact-card {
+    padding: 1.4rem;
+    border: 1px solid var(--rcm-border);
+    border-radius: var(--radius);
+    background: var(--rcm-surface);
+}
+.contact-card strong { font-size: .76rem; letter-spacing: .18em; color: var(--rcm-magenta); text-transform: uppercase; }
+.contact-card .main { margin-top: .5rem; font-weight: 500; word-break: break-word; }
+.contact-card .sub2 { margin-top: .2rem; color: var(--rcm-text-muted); font-size: .92rem; }
+.contact-card .hours { margin-top: .5rem; color: var(--rcm-text-dim); font-size: .82rem; }
+.contact-card a:hover { color: var(--rcm-magenta); }
+
+@media (max-width: 880px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+    .contact-intro { position: static; }
+    .contact-points { display: none; }
+    .contact-cards { grid-template-columns: 1fr; }
+    .talk-actions { width: 100%; }
+    .talk-actions .btn { flex: 1; }
+}
+
 /* ---------- REVEAL ANIMATION ---------- */
 .reveal {
     opacity: 0;
