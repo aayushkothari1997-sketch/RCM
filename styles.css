@@ -518,6 +518,7 @@ section { padding: clamp(4rem, 9vw, 7rem) 0; position: relative; }
 }
 .form textarea { min-height: 130px; resize: vertical; }
 .form .field { margin-bottom: 1rem; }
+.form .req { color: var(--rcm-magenta); margin-left: .15rem; }
 
 /* ---------- BLOG CARDS ---------- */
 .blogs-grid {

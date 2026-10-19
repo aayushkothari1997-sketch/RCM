@@ -74,27 +74,33 @@ src="https://www.facebook.com/tr?id=1390845873037111&ev=PageView&noscript=1"
                 <form class="form" data-sheet-form action="https://script.google.com/macros/s/AKfycbzqeGxx7K91PUz4SYm6stSV-z8j1O23VH8Z6y93THFn9aJOh1J8Rsta-XZ69FkCizVzPQ/exec" method="POST">
                     <div class="row">
                         <div class="field">
-                            <label for="fname">First name</label>
+                            <label for="fname">First name <span class="req" aria-hidden="true">*</span></label>
                             <input id="fname" name="first_name" type="text" required placeholder="Your first name">
                         </div>
                         <div class="field">
-                            <label for="lname">Last name</label>
+                            <label for="lname">Last name <span class="req" aria-hidden="true">*</span></label>
                             <input id="lname" name="last_name" type="text" required placeholder="Your last name">
                         </div>
                     </div>
                     <div class="row">
                         <div class="field">
-                            <label for="email">Email</label>
+                            <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
                             <input id="email" name="email" type="email" required placeholder="you@brand.com">
                         </div>
                         <div class="field">
-                            <label for="phone">Phone</label>
-                            <input id="phone" name="phone" type="tel" placeholder="+91 98331 36580">
+                            <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
+                            <input id="phone" name="phone" type="tel" required pattern="[0-9\s\+\-\(\)]{7,}" title="Please enter a valid phone number" autocomplete="tel" placeholder="+91 98331 36580">
                         </div>
                     </div>
-                    <div class="field">
-                        <label for="brand">Brand / Company</label>
-                        <input id="brand" name="brand" type="text" placeholder="Your brand name">
+                    <div class="row">
+                        <div class="field">
+                            <label for="brand">Brand / Company</label>
+                            <input id="brand" name="brand" type="text" placeholder="Your brand name">
+                        </div>
+                        <div class="field">
+                            <label for="website">Website <span class="req" aria-hidden="true">*</span></label>
+                            <input id="website" name="website" type="text" inputmode="url" required autocomplete="url" placeholder="yourbrand.com">
+                        </div>
                     </div>
                     <div class="field">
                         <label for="service">What do you need?</label>
