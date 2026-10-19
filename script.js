@@ -37,11 +37,12 @@ document.querySelectorAll('form[data-noop]').forEach(f => {
     });
 });
 
-// Formspree AJAX submission — keeps the user on the page, shows inline status
-document.querySelectorAll('form[data-formspree]').forEach(f => {
+// Contact form -> Google Sheet (via Google Apps Script web app). Keeps the visitor on the page.
+document.querySelectorAll('form[data-sheet-form]').forEach(f => {
     const status = f.querySelector('[data-form-status]');
     const btn = f.querySelector('button[type="submit"]');
     const originalBtnHTML = btn ? btn.innerHTML : '';
+    const fallback = 'Something went wrong. Please email grow@rollercoastermedia.com or WhatsApp +91 98331 36580 instead.';
 
     const setStatus = (msg, kind) => {
         if (!status) return;
@@ -51,33 +52,32 @@ document.querySelectorAll('form[data-formspree]').forEach(f => {
                            : kind === 'err' ? '#ff6b6b'
                            : 'var(--rcm-text-muted)';
     };
+    const resetBtn = () => { if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; } };
 
     f.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (!f.action || f.action.includes('PASTE_')) { setStatus('✗ ' + fallback, 'err'); return; }
         if (btn) { btn.disabled = true; btn.innerHTML = 'Sending…'; }
         setStatus('Sending your enquiry…', 'info');
 
         try {
-            const res = await fetch(f.action, {
-                method: 'POST',
-                body: new FormData(f),
-                headers: { 'Accept': 'application/json' }
-            });
+            const body = new URLSearchParams(new FormData(f));
+            body.append('page', location.href);
+            const res = await fetch(f.action, { method: 'POST', body });
+            const data = await res.json().catch(() => ({}));
 
-            if (res.ok) {
+            if (res.ok && data.ok) {
                 f.reset();
                 setStatus('✓ Thanks — we got it. The team will reply within 2 hours.', 'ok');
                 if (btn) btn.innerHTML = 'Sent ✓';
-                setTimeout(() => { if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; } }, 4000);
+                setTimeout(resetBtn, 4000);
             } else {
-                const data = await res.json().catch(() => ({}));
-                const msg = (data.errors && data.errors.map(e => e.message).join(', ')) || 'Something went wrong. Please email grow@rollercoastermedia.com instead.';
-                setStatus('✗ ' + msg, 'err');
-                if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; }
+                setStatus('✗ ' + fallback, 'err');
+                resetBtn();
             }
         } catch (err) {
-            setStatus('✗ Network error. Please email grow@rollercoastermedia.com instead.', 'err');
-            if (btn) { btn.innerHTML = originalBtnHTML; btn.disabled = false; }
+            setStatus('✗ ' + fallback, 'err');
+            resetBtn();
         }
     });
 });
